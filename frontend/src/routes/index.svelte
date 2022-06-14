@@ -1,21 +1,40 @@
 <script lang="ts">
 	import TaskListTile from '../components/TaskListTile.svelte';
+	import FormElement from '../components/FormElement.svelte';
 	import { tasks } from '../stores/tasks';
 	import { flip } from 'svelte/animate';
+	import dayjs from 'dayjs';
 
-	let taskInput = '';
+	let name = '';
+	let priority = 1;
+
+	let dueDateString: string = '';
+	let doDateString: string = '';
+
+	let naturalInput: string = '';
 
 	$: completedTasks = $tasks.filter((task) => task.completed);
 	$: uncompletedTasks = $tasks.filter((task) => !task.completed);
 
 	function addTask() {
+		const dueDate = dayjs(dueDateString);
+		const doDate = dayjs(doDateString);
+
 		const newTask = {
-			title: taskInput,
+			title: name,
+			priority,
+			dueDate: dueDate.isValid() ? dueDate.toDate() : null,
+			doDate: doDate.isValid() ? dueDate.toDate() : null,
 			completed: false
 		};
 
 		tasks.add(newTask);
-		taskInput = '';
+		name = '';
+	}
+
+	function addNaturalTask() {
+		tasks.parseAndAdd(naturalInput);
+		naturalInput = '';
 	}
 </script>
 
@@ -23,24 +42,30 @@
 	<div class="bg-orange-500 p-4">
 		<h1 class="text-2xl font-bold text-white">Donezo</h1>
 	</div>
-	<main class="p-8">
-		<div class="flex w-full justify-between">
-			<div>
-				<div class="flex space-x-4">
-					<div class="space-y-2">
-						<p class="font-semibold">Enter your task...</p>
+	<main class="p-8 ">
+		<div class="flex w-full justify-between space-x-8">
+			<div class="flex justify-between w-1/2">
+				<form
+					class="space-y-4"
+					on:submit={(e) => {
+						e.preventDefault();
+						addNaturalTask();
+					}}
+				>
+					<h1 class="font-semibold text-2xl">Enter your natural-ish task...</h1>
+					<FormElement label="Natural Input">
 						<input
-							class="p-2 shadow border-2 border-orange-200 focus:border-orange-400 outline-none rounded"
-							bind:value={taskInput}
+							class="p-2 shadow border-2 border-orange-200 focus:border-orange-400 outline-none rounded w-full"
+							bind:value={naturalInput}
 						/>
-					</div>
+					</FormElement>
 					<button
-						class="py-2 px-4 text-center border-2 border-orange-200 bg-orange-100 rounded"
-						on:click={addTask}
+						class="py-2 px-4 text-center border-2 border-orange-200 bg-orange-100 rounded w-full "
+						on:click={addNaturalTask}
 					>
 						Add
 					</button>
-				</div>
+				</form>
 			</div>
 			<div class="w-1/2 flex space-x-8">
 				<div class="basis-1/2">
@@ -51,6 +76,7 @@
 								<TaskListTile
 									{task}
 									on:toggle={() => tasks.setCompletion(task.id, !task.completed)}
+									on:delete={() => tasks.remove(task.id)}
 									on:click={() => tasks.setCompletion(task.id, !task.completed)}
 								/>
 							</div>
@@ -65,6 +91,7 @@
 								<TaskListTile
 									{task}
 									on:toggle={() => tasks.setCompletion(task.id, !task.completed)}
+									on:delete={() => tasks.remove(task.id)}
 									on:click={() => tasks.setCompletion(task.id, !task.completed)}
 								/>
 							</div>
