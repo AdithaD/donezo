@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse } from 'axios';
 import type { AddTaskRequestBody, Task } from '$/models/task';
-
+import type { AddListRequestBody, List } from '$/models/list';
 const baseURL = 'http://localhost:8080/api/v1';
 
 const apiClient = axios.create({
@@ -45,4 +45,9 @@ export const TaskAPI = {
 	setTaskCompletion: (id: string, completed: boolean) =>
 		requests.patch(`/task/${id}/complete`, { completed }),
 	deleteTask: (id: string) => requests.delete(`/task/${id}`)
+};
+export const ListAPI = {
+	getList: (id: string): Promise<List> => requests.get(`/list/${id}`),
+	getLists: (): Promise<List[]> => requests.get('/list'),
+	addList: (body: AddListRequestBody) => requests.post('/list', body)
 };

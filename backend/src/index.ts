@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import "./utils/db";
 
-import tasks from "./routes/tasks";
+import task from "./routes/task";
+import list from "./routes/list";
+
 import logging from "./utils/logging";
 import cors from "cors";
 
@@ -16,8 +18,8 @@ server.use(logging);
 
 const v1 = express.Router();
 
-v1.use("/task", tasks);
-
+v1.use("/task", task);
+v1.use("/list", list);
 server.use("/api/v1", v1);
 
 server.listen(port, () => {

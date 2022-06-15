@@ -1,8 +1,10 @@
+import { AddTaskRequestBody, DBTask } from "$/models/task";
 import { ObjectId } from "bson";
 import dayjs from "dayjs";
-import express, { query, Request, Response } from "express";
-import { taskModel } from "../schemas/tasks";
-import { AddTaskRequestBody, Task } from "$/models/task";
+import express, { Request, Response } from "express";
+import mongoose from "mongoose";
+import { listModel } from "../schemas/list";
+import { taskModel } from "../schemas/task";
 import { APIError } from "../utils/error";
 
 const router = express.Router();
@@ -42,23 +44,35 @@ async function addTask(req: Request, res: Response) {
     }
   }
 
-  const newTask: Omit<Task, "_id"> = {
-    title: body.title,
-    completed: false,
-    priority: body.priority || 0,
-    doDate: body.doDate || null,
-    dueDate: body.dueDate || null,
-  };
-
-  try {
-    const created = await taskModel.create(newTask);
-
-    res.status(201).send({ resource: created.id });
-  } catch (error) {
-    new APIError("InternalError", req, "Could not create task").sendResponse(
-      res
-    );
+  if (!ObjectId.isValid(body.parent)) {
+    new APIError("BadRequestError", req, "Invalid parent").sendResponse(res);
     return;
+  }
+
+  const list = await listModel.findById(body.parent);
+
+  if (!list) {
+    new APIError("NotFoundError", req, "List not found").sendResponse(res);
+  } else {
+    const newTask: Omit<DBTask, "_id"> = {
+      title: body.title,
+      completed: false,
+      priority: body.priority || 0,
+      doDate: body.doDate || null,
+      dueDate: body.dueDate || null,
+      parent: new mongoose.Types.ObjectId(body.parent),
+    };
+
+    try {
+      const created = await taskModel.create(newTask);
+
+      res.status(201).send({ resource: created.id });
+    } catch (error) {
+      new APIError("InternalError", req, "Could not create task").sendResponse(
+        res
+      );
+      return;
+    }
   }
 }
 
