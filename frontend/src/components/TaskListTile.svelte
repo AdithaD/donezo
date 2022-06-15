@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Task } from 'src/models';
+	import type { Task } from '$/models/task';
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import PrioritySticker from './PrioritySticker.svelte';
@@ -29,13 +29,15 @@
 			</div>
 			<div class="flex">
 				<div class="m-auto">
-					<PrioritySticker priority={task.priority} />
+					{#if !task.completed}
+						<PrioritySticker priority={task.priority} />
+					{/if}
 				</div>
 			</div>
 		</div>
 		<div>
 			<div class="flex space-x-4">
-				{#if task.dueDate || task.doDate}
+				{#if (task.dueDate || task.doDate) && !task.completed}
 					{#if task.doDate}
 						<p class="text-sm text-gray-600 p-1 bg-gray-200 rounded">
 							<b>Do</b>: {task.doDate.toDateString()}

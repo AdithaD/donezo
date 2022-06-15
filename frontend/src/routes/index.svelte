@@ -38,36 +38,41 @@
 	}
 </script>
 
-<div>
-	<div class="bg-orange-500 p-4">
+<div class="bg-indigo-300 h-screen">
+	<div class="bg-orange-400 p-4">
 		<h1 class="text-2xl font-bold text-white">Donezo</h1>
 	</div>
-	<main class="p-8 ">
-		<div class="flex w-full justify-between space-x-8">
-			<div class="flex justify-between w-1/2">
-				<form
-					class="space-y-4"
-					on:submit={(e) => {
-						e.preventDefault();
-						addNaturalTask();
-					}}
-				>
-					<h1 class="font-semibold text-2xl">Enter your natural-ish task...</h1>
-					<FormElement label="Natural Input">
-						<input
-							class="p-2 shadow border-2 border-orange-200 focus:border-orange-400 outline-none rounded w-full"
-							bind:value={naturalInput}
-						/>
-					</FormElement>
-					<button
-						class="py-2 px-4 text-center border-2 border-orange-200 bg-orange-100 rounded w-full "
-						on:click={addNaturalTask}
+	<div class="flex ">
+		<main class="p-8 m-4 w-1/2 shadow-md mx-auto rounded space-y-8 bg-white">
+			<div class="w-full flex">
+				<div class="justify-between mx-auto w-full">
+					<form
+						class="space-y-4"
+						on:submit={(e) => {
+							e.preventDefault();
+							addNaturalTask();
+						}}
 					>
-						Add
-					</button>
-				</form>
+						<h1 class="font-semibold text-2xl">Enter your task...</h1>
+						<div>
+							<div class="flex space-x-8">
+								<input
+									class="p-2 shadow border-2 border-orange-200 focus:border-orange-400 outline-none rounded w-full basis-5/6"
+									bind:value={naturalInput}
+									placeholder="e.g. My Task pri:high do:19/06 due:19/06"
+								/>
+								<button
+									class="py-2 px-4 text-center hover:bg-orange-500 bg-orange-400 rounded w-full basis-1/6 font-semibold text-white"
+									on:click={addNaturalTask}
+								>
+									Add
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
-			<div class="w-1/2 flex space-x-8">
+			<div class="flex space-x-8">
 				<div class="basis-1/2">
 					<h2 class="text-2xl font-semibold mb-4">Your Tasks</h2>
 					<div class="space-y-2">
@@ -99,6 +104,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</main>
+		</main>
+	</div>
 </div>

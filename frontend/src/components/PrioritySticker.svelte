@@ -3,7 +3,7 @@
 </script>
 
 {#if priority == 1}
-	<div class="bg-blue-500 p-2 uppercase rounded h-fit">
+	<div class="bg-blue-500 p-2  uppercase rounded h-fit">
 		<p class="text-sm  font-bold text-white">LOW</p>
 	</div>
 {:else if priority == 2}
