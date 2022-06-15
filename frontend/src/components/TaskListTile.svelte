@@ -16,38 +16,40 @@
 </script>
 
 <div
-	class="flex p-4 border-orange-200 border-2 rounded hover:bg-orange-100 transition-all  justify-between space-y-2"
+	class="flex px-4 py-2 border-orange-200 border-2 rounded hover:bg-orange-100 transition-all  justify-between space-y-2"
 	class:border-orange-200={!task.completed}
 	class:border-gray-200={task.completed}
 	transition:fade={{ duration: 200 }}
 >
-	<div class="flex-grow" on:click>
-		<div class="flex justify-between">
+	<div class="flex-grow flex justify-between items-center" on:click>
+		<div class="md:flex md:justify-between md:flex-grow">
 			<div class="space-x-2">
 				<input type="checkbox" checked={task.completed} on:change={toggle} />
 				<span class="align-middle">{task.title}</span>
 			</div>
-			<div class="flex">
-				<div class="m-auto">
-					{#if !task.completed}
-						<PrioritySticker priority={task.priority} />
-					{/if}
-				</div>
-			</div>
-		</div>
-		<div>
 			<div class="flex space-x-4">
 				{#if (task.dueDate || task.doDate) && !task.completed}
 					{#if task.doDate}
-						<p class="text-sm text-gray-600 p-1 bg-gray-200 rounded">
-							<b>Do</b>: {task.doDate.toDateString()}
+						<p class="text-sm text-gray-600 p-1 h-fit bg-gray-200 rounded ">
+							<span class="">
+								<b>Do</b>: {task.doDate.toDateString()}
+							</span>
 						</p>
 					{/if}
 					{#if task.dueDate}
-						<p class="text-sm text-gray-600 p-1 bg-gray-200 rounded">
-							<b>Due</b>: {task.dueDate.toDateString()}
+						<p class="text-sm text-gray-600 p-1 h-fit bg-gray-200 rounded">
+							<span class="">
+								<b>Due</b>: {task.dueDate.toDateString()}
+							</span>
 						</p>
 					{/if}
+				{/if}
+			</div>
+		</div>
+		<div class="flex ml-8">
+			<div class="m-auto">
+				{#if !task.completed}
+					<PrioritySticker priority={task.priority} />
 				{/if}
 			</div>
 		</div>
@@ -69,9 +71,9 @@
 		</svg>
 		{#if showMenu}
 			<div
-				class="absolute top-4 left-0 bg-white z-[1000] border-2 border-orange-200 hover:bg-orange-100 p-4 rounded"
+				class="absolute top-4 left-0 bg-white z-[1000] border-2 border-orange-200 hover:bg-orange-100  rounded flex flex-col"
 			>
-				<p on:click={(e) => dispatch('delete')}>Delete</p>
+				<p class="p-4" on:click={(e) => dispatch('delete')}>Delete</p>
 			</div>
 		{/if}
 	</div>
