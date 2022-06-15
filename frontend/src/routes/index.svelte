@@ -71,13 +71,13 @@
 				<div class="basis-1/2">
 					<h2 class="text-2xl font-semibold mb-4">Your Tasks</h2>
 					<div class="space-y-2">
-						{#each uncompletedTasks as task (task.id)}
+						{#each uncompletedTasks as task (task._id)}
 							<div animate:flip={{ duration: 500 }}>
 								<TaskListTile
 									{task}
-									on:toggle={() => tasks.setCompletion(task.id, !task.completed)}
-									on:delete={() => tasks.remove(task.id)}
-									on:click={() => tasks.setCompletion(task.id, !task.completed)}
+									on:toggle={() => tasks.setCompletion(task._id, !task.completed)}
+									on:delete={() => tasks.remove(task._id)}
+									on:click={() => tasks.setCompletion(task._id, !task.completed)}
 								/>
 							</div>
 						{/each}
@@ -86,13 +86,13 @@
 				<div class="basis-1/2">
 					<h2 class="text-2xl font-semibold mb-4">Completed Tasks</h2>
 					<div class="space-y-2">
-						{#each completedTasks as task (task.id)}
+						{#each completedTasks as task (task._id)}
 							<div animate:flip={{ duration: 500 }}>
 								<TaskListTile
 									{task}
-									on:toggle={() => tasks.setCompletion(task.id, !task.completed)}
-									on:delete={() => tasks.remove(task.id)}
-									on:click={() => tasks.setCompletion(task.id, !task.completed)}
+									on:toggle={() => tasks.setCompletion(task._id, !task.completed)}
+									on:delete={() => tasks.remove(task._id)}
+									on:click={() => tasks.setCompletion(task._id, !task.completed)}
 								/>
 							</div>
 						{/each}
