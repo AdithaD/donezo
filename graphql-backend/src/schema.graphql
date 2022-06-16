@@ -25,12 +25,14 @@ type DNList {
 }
 
 type Query {
-  tasks: [Task!]!
-  lists: [DNList!]!
+  tasks(limit: Int, completed: Boolean): [Task!]!
+  lists(limit: Int): [DNList!]!
+  task(_id: ID!): Task
+  list(_id: ID!): DNList
 }
 
 type Mutation {
-  createList(title: String!, color: String!): List!
+  createList(title: String!, color: String): List!
   createTask(
     title: String!
     doDate: String
@@ -38,5 +40,6 @@ type Mutation {
     priority: Int
     parent: ID!
   ): Task
-  completeTask(_id: ID!): ID!
+  setTaskCompletion(_id: ID!, completed: Boolean!): ID!
+  deleteTask(_id: ID!): ID
 }

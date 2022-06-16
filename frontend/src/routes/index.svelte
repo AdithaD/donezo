@@ -15,6 +15,8 @@
 
 	onMount(() => {
 		ListAPI.getLists().then((l) => {
+			console.log(l);
+
 			lists = l.map(initListFromJSON);
 		});
 	});
