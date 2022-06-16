@@ -1,0 +1,42 @@
+# Represents a todo task
+type Task {
+  _id: ID!
+  title: String!
+  completed: Boolean!
+  doDate: String
+  dueDate: String
+  priority: Int!
+  parent: ID!
+}
+
+# Represents a list of todo tasks
+
+type List {
+  _id: String!
+  title: String!
+  color: String!
+}
+
+type DNList {
+  _id: String!
+  title: String!
+  color: String!
+  tasks: [Task!]!
+}
+
+type Query {
+  tasks: [Task!]!
+  lists: [DNList!]!
+}
+
+type Mutation {
+  createList(title: String!, color: String!): List!
+  createTask(
+    title: String!
+    doDate: String
+    dueDate: String
+    priority: Int
+    parent: ID!
+  ): Task
+  completeTask(_id: ID!): ID!
+}
